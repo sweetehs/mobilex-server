@@ -7,14 +7,14 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 
-const index = require('./routes/index')
+const subject = require('./routes/subject')
 
 // error handler
 onerror(app)
 
 // middlewares
 app.use(bodyparser({
-  enableTypes:['json', 'form', 'text']
+  enableTypes: ['json', 'form', 'text']
 }))
 app.use(json())
 app.use(logger())
@@ -26,14 +26,21 @@ app.use(views(__dirname + '/views', {
 
 // logger
 app.use(async (ctx, next) => {
-  const start = new Date()
-  await next()
-  const ms = new Date() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+  try {
+    await next()
+    ctx.body = {
+      status: 1,
+      data: ctx.body
+    }
+  } catch (err) {
+    ctx.status = err.status || 500;
+    ctx.body = err.message;
+    ctx.app.emit('error', err, ctx);
+  }
 })
 
 // routes
-app.use(index.routes(), index.allowedMethods())
+app.use(subject.routes(), subject.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
