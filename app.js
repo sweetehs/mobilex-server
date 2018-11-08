@@ -32,10 +32,19 @@ app.use(async (ctx, next) => {
       status: 1,
       data: ctx.body
     }
-  } catch (err) {
-    ctx.status = err.status || 500;
-    ctx.body = err.message;
-    ctx.app.emit('error', err, ctx);
+  } catch (error) {
+    if(error.status){
+      ctx.status = error.status;
+      ctx.body = error.message;
+    }else{
+      ctx.status = 200
+      ctx.body = {
+        status: 0,
+        message: error.message
+      }
+    }
+    ctx.app.emit('error', error, ctx);
+    
   }
 })
 

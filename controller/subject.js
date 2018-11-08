@@ -17,11 +17,15 @@ const subjectGetById = function (id) {
   })
 }
 const subjectUpdateById = async function (id, data) {
-  return subjectDB.update({
+  return subjectDB.updateOne({
     _id: new ObjectId(id)
   }, {
     $set: {
       data: data
+    }
+  }).then((result)=>{
+    if(result.n == 0){
+      throw new Error("修改数据失败")
     }
   })
 }
