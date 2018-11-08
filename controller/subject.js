@@ -16,16 +16,19 @@ const subjectGetById = function (id) {
     _id: new ObjectId(id)
   })
 }
-const subjectUpdateById = async function (id, data) {
+const subjectUpdateById = async function (id, cover, data) {
   return subjectDB.updateOne({
     _id: new ObjectId(id)
   }, {
     $set: {
+      cover: cover,
       data: data
     }
-  }).then((result)=>{
-    if(result.n == 0){
+  }).then((result) => {
+    if (result.n == 0) {
       throw new Error("修改数据失败")
+    } else {
+      Promise.resolve()
     }
   })
 }

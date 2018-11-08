@@ -28,6 +28,7 @@ app.use(views(__dirname + '/views', {
 app.use(async (ctx, next) => {
   try {
     await next()
+    ctx.status = 200
     ctx.body = {
       status: 1,
       data: ctx.body

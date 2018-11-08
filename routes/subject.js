@@ -33,9 +33,10 @@ router.get('/mobilex/subject/get', async (ctx, next) => {
 router.post('/mobilex/subject/update', async (ctx, next) => {
   const {
     id,
+    cover,
     subject
   } = ctx.request.body
-  ctx.body = await controllerSubject.subjectUpdateById(id, subject)
+  ctx.body = await controllerSubject.subjectUpdateById(id, cover, subject)
 })
 // router.get('/mobilex/test', async (ctx, next) => {
 //   ctx.body = [{
