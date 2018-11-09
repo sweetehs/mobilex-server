@@ -1,6 +1,5 @@
 const Koa = require('koa')
 const app = new Koa()
-require("./mongodb/index")
 const views = require('koa-views')
 const json = require('koa-json')
 const onerror = require('koa-onerror')
@@ -8,6 +7,9 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 
 const subject = require('./routes/subject')
+const upload = require('./routes/upload')
+
+require("./mongodb/index")
 
 // error handler
 onerror(app)
@@ -18,19 +20,19 @@ app.use(bodyparser({
 }))
 app.use(json())
 app.use(logger())
-app.use(require('koa-static')(__dirname + '/public'))
 
+app.use(require('koa-static')(__dirname + '/public'))
 app.use(views(__dirname + '/views', {
   extension: 'pug'
 }))
 
-// logger
+// // logger
 app.use(async (ctx, next) => {
   try {
     await next()
-    ctx.status = 200
+    ctx.status = ctx.status ? ctx.status : 200
     ctx.body = {
-      status: 1,
+      status: ctx.status === 200 ? 1 : 0,
       data: ctx.body
     }
   } catch (error) {
@@ -45,12 +47,12 @@ app.use(async (ctx, next) => {
       }
     }
     ctx.app.emit('error', error, ctx);
-    
   }
 })
 
 // routes
 app.use(subject.routes(), subject.allowedMethods())
+app.use(upload.routes(), upload.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
