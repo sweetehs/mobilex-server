@@ -8,7 +8,7 @@ router.post('/mobilex/upload', async (ctx) => {
     files
   } = await asyncBusboy(ctx.req)
   const file = files[0]
-  const filename = file.filename
+  const filename = file.filename.replace(/\s/g,"")
   var toFile = fs.createWriteStream(path.join(__dirname, '../public/images/' + filename));
   file.pipe(toFile)
   await new Promise((resolve, reject) => {

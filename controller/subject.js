@@ -3,8 +3,10 @@ const ObjectId = require('mongodb').ObjectId;
 const subjectAdd = async function (data) {
   return subjectDB.create(data);
 }
-const subjectGetAll = async function () {
-  return subjectDB.find()
+const subjectGetAll = async function (userid) {
+  return subjectDB.find({
+    userid: userid
+  })
 }
 const subjectRemoveById = async (id) => {
   return subjectDB.deleteOne({
