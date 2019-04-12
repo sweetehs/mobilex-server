@@ -48,8 +48,7 @@ app.use(views(__dirname + '/views', {
   extension: 'pug'
 }))
 
-
-app.use(async (ctx, next) => {
+app.use(async (ctx, next) => { 
   try {
     await next()
     ctx.status = ctx.status ? ctx.status : 200
@@ -62,10 +61,20 @@ app.use(async (ctx, next) => {
       ctx.status = error.status;
       ctx.body = error.message;
     } else {
-      ctx.status =  ctx.status ?  ctx.status : 200
-      ctx.body = {
-        status: 0,
-        message: error.message
+      let errorArr = error.message.split("-")
+      if(errorArr.length == 2){
+        ctx.status = 200
+        ctx.body = {
+          status: 0,
+          type: errorArr[0],
+          message: errorArr[1]
+        }
+      }else{
+        ctx.status =  ctx.status ?  ctx.status : 200
+        ctx.body = {
+          status: 0,
+          message: error.message
+        }
       }
     }
     ctx.app.emit('error', error, ctx);

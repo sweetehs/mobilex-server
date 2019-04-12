@@ -60,8 +60,8 @@ router.post('/mobilex/subject/update', async (ctx, next) => {
 })
 router.get('/mobilex/test', async (ctx, next) => {
   ctx.body = [{
-    text1: "11",
-    text2: "11",
+    text1: "11ddd",
+    text2: "1dd1",
     image: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541433560937&di=c0040b3a25788365a550b7be05cbd89a&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201605%2F04%2F20160504182904_VwJEa.jpeg"
   }, {
     text1: "22",

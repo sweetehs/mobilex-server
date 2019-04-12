@@ -40,7 +40,6 @@ router.post("/mobilex/user/login", async (ctx) => {
     }, configjwt, {
       expiresIn: '4h'
     })
-    console.log(token)
     ctx.body = {
       token: token
     }
